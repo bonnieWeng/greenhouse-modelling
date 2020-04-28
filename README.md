@@ -19,7 +19,7 @@ To run a simulation, simply clone this repository to your local workspace. Then 
 The figures below show the sample outputs from the simulation.
 ![output1](figures/output1.png)
 
-![output2](figures/output2.png)
+![output2_new](figures/output2.png)
 
 ![output3](figures/output3.png)
 
