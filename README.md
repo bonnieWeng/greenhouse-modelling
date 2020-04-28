@@ -13,7 +13,7 @@ In our design, Plotly Dash is used to make our simulation interactive to the use
 ## How to run a simulation?
 To run a simulation, simply clone this repository to your local workspace. Then run the file, layout.py. A new web browser should open and display the users inputs as the figure shown here. <br>
 
-![User Input Panel](figures/frontend.png)
+![frontend](figures/frontend.png)
 
 ## Sample outputs
 The figures below show the sample outputs from the simulation.
