@@ -1,3 +1,4 @@
+# OK Bloomer
 ## A Decision Support Tool for Greenhouse Design
 This project is created as a part of the 4th year capstone design course at the University of Toronto Engineering Science Energy Systems specialization. For more design background, process and assumptions of our simulation project, please see our online documentation (link to be updated). We hope you enjoy exploring our project!
 
