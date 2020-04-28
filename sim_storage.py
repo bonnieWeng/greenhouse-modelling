@@ -5,40 +5,6 @@ import math
 # This script currently only consists of energy storage calculations
 
 # Import all datasets
-"""
-# Water consumption requirements of each plant
-We_sheet = pd.read_excel("datasets/Water_Consumption.xlsx", index_col = None)
-# Heat loss U values
-U_sheet = pd.read_excel('datasets/virtual_grower_material_u_values.xlsx', index_col = None)
-# Crop Lighting Requirements spreadsheet
-Crop_Light = pd.read_excel('datasets/Crop_Light.xlsx', index_col = None)
-# Ambient Lighting Spreadsheet, based upon Detroit Ambient Solar Data spreadsheet
-Amb_sheet = pd.read_excel('datasets/Ambient_Light_Read.xlsx', index_col = None)
-# Lighting Selection Data
-Light_pick = pd.read_excel('datasets/Lighting_Read.xlsx', index_col = None)
-# Detroit Ambient Solar Data Spreadsheet, to be used as a Representative Dataset for Leamington Ontario
-Detroit = pd.read_excel('datasets/Hourly Profile of Detroit (2010).xlsx', index_col = None)
-
-# Get representative solar profiles
-solar_profs = {}
-for i in range (1, 13):
-    solar_profs[i] = pd.read_excel("datasets/RepresentativeSolarProfiles.xlsx", header=0, sheet_name="{}".format(i))
-
-#Get crop data to provide rough info as to the needs of each plant
-crop_data = pd.read_csv("datasets/Crop Data.csv", header=0, index_col="Plant")
-
-# Get spreadsheets concerning GHG emissions for fuel type, grid power, and ON grid energy source respectively
-GHG_data_fuel = pd.read_excel("datasets/emissions_factors.xlsx", header=0, sheet_name="Fuel")
-GHG_data_grid = pd.read_excel("datasets/emissions_factors.xlsx", header=0, sheet_name="Grid Intensity By Province", index_col ='Province')
-GHG_data_source = pd.read_excel("datasets/emissions_factors.xlsx", header=0, sheet_name="ON Grid Energy Source Intensity")
-
-# Get Ontario TOU Pricing Per Kwh (general use)
-TOU = pd.read_excel('datasets/Ontario TOU Pricing.xlsx', index_col = None)
-
-# Get TOU Pricing Spreadsheets for more specific uses 
-TOU_pricing = pd.read_excel("datasets/Ontario TOU Pricing.xlsx", header=0, sheet_name="Sheet1", index_col='Start Time')
-TOU_pricing = TOU_pricing.sort_values(by=['Start Time'])
-"""
 # Energy Storage Information
 storage_sheet = pd.read_excel("datasets/EnergyStorage.xlsx", header=0, sheet_name="MAIN")
 
@@ -135,6 +101,21 @@ def storage_calc(storage_type, optimisation_type, power_capacity, energy_capacit
 
 # Helper functions for energy storage calculations
 def flatten_profile(profile, store_peak, store_energy, efficiency, prices, increment):
+    """
+    Function: creates a new load profile that deploys storage to flatten the initial profile
+    inputs: 
+        profile: electricity profile to be optimized (array of values, 24)
+        store_peak (power rating of storage, should be same units as profile)
+        store_energy (enrgy rating of storage, should be same units as profile over time)
+        efficiency: round-trip efficiency of unit (0-1)
+        prices: array of hourly prices (24
+        increment: 
+
+    returns: 
+        shaved_profile: new overall load profile      
+        battery_profile: electricity profile of storage unit (positive discharge, negative charge)                    
+        daily_savings: single value of savings for the day, in units of prices
+    """
     battery_profile = np.zeros(24)
     shaved_profile = profile.copy()
     tots = {}
@@ -184,6 +165,21 @@ def flatten_profile(profile, store_peak, store_energy, efficiency, prices, incre
 
 
 def flatten_cost(profile, store_peak, store_energy, efficiency, prices, increment):
+  """
+  Function: creates a new load profile that deploys storage minimize costs
+    inputs: 
+        profile: electricity profile to be optimized (array of values, 24)
+        store_peak (power rating of storage, should be same units as profile)
+        store_energy (enrgy rating of storage, should be same units as profile over time)
+        efficiency: round-trip efficiency of unit (0-1)
+        prices: array of hourly prices (24
+        increment: 
+
+    returns: 
+        shaved_profile: new overall load profile      
+        battery_profile: electricity profile of storage unit (positive discharge, negative charge)                    
+        daily_savings: single value of savings for the day, in units of prices
+  """
   #shaved_peak = np.zeros(24)
   battery_profile = np.zeros(24)
   #charged_peak = np.zeros(24)
@@ -246,6 +242,9 @@ def flatten_cost(profile, store_peak, store_energy, efficiency, prices, incremen
   return shaved_profile, battery_profile, daily_saving
 
 def feasible_charge(increment, discharge_hour, charge_hour, current_battery_profile, battery_peak, battery_energy, efficiency):
+  #function to evaluate whether a certain charge/discharge hour pairing is feasible,
+  #given the limitations of the storage unit and the current storage profile
+  #returns True if feasible, False if infeasible
   battery_profile = current_battery_profile.copy()
   battery_profile[discharge_hour] += increment*efficiency
   battery_profile[charge_hour] -= increment
@@ -261,6 +260,9 @@ def feasible_charge(increment, discharge_hour, charge_hour, current_battery_prof
   return True
   
 def energies(profile):
+  #NOT USED IN SIMULATION
+  #Function takes in a profile, and returns an array of same length where each 
+  #entry of the array corresponds to the energy of the current charge/discharge period.
   zeros = []
   energies = np.zeros(24)
   if (profile[23]*profile[0])<=0:
@@ -279,6 +281,11 @@ def energies(profile):
   return energies
 
 def create_order(p):
+  #Function to create the order of priority for charging/discharging hours to reduce cost
+  #input is a dictionary, where keys are the int prices values possible for the profile,
+  #and each key gives a data frame of hours (and loads) that have that price
+  #outputs an array sorting the hours 0-23 in terms of favourability based on 
+  #price first, then load
   d = p.copy()
   key_array =list(d.keys())
   order = []
@@ -290,6 +297,9 @@ def create_order(p):
   return order
 
 def create_order_flatten(profile_df):
+  #function to create order of priority for charging/discharging to flatten profile
+  #input is a profile array
+  #output is an order of hours (0-23)
   order_df = profile_df.sort_values(by = ['Load (kW)'])
 
   order = np.asarray(order_df['Hour'])
