@@ -1,0 +1,13 @@
+Plant,Cannabis,Tomato,Cucumber,Pepper
+Optimal Temp Day,22,24,24,22
+Optimal Temp Night,16,18,19,18
+Optimal Humidity Day,60,65,65,60
+Optimal Humidity Night,60,65,80,60
+CO2 Concentration,800,400,400,550
+Light DLI,45,,,
+Light PPFD,950,,,
+Water Consumption (L/day/plant),3,2,5,5
+Spacing (plants/sqm),4,2.5,1.5,3.5
+Plant Cycle,84,,45,90
+Price/kg,5110,2,2,2
+Yield,,,,
