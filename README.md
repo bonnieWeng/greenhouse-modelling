@@ -1,5 +1,5 @@
 ## A Decision Support Tool for Greenhouse Design
-This project is created by the University of Toronto Engineering Science Energy Systems Specialization Class of 2020, for the 4th year capstone design course. For more design background, process and assumptions of our simulation model, please see our design report (in the report folder). We hope you enjoy exploring our project!
+This project is created by the University of Toronto Engineering Science Energy Systems Specialization Class of 2020, as a part of the 4th year capstone design course. For more design background, process and assumptions of our simulation model, please see our design report (in the report folder). We hope you enjoy exploring our project!
 
 ## Getting Started
 Our project runs on Python 3.7 and uses Plotly Dash and Dash Bootstrap Components packages. Therefore, in order to run our simulation, you will need to install Python and the associated packages. Please see the below links to the official documentation for set up instructions. <br>
