@@ -29,5 +29,5 @@ All of the data used to design this simulation is stored in the folder named dat
 ## Group Members
 - Ben Mucsi
 - Rosemary Jose
-- Josh
+- Joshua Paciocco
 - Bonnie Weng
