@@ -25,3 +25,9 @@ The figures below show the sample outputs from the simulation.
 
 ## How to modify datasets?
 All of the data used to design this simulation is stored in the folder named datasets. If you would like to enhance or update the data, simply modified the excel workbooks or csvs there. However, you may also need to update the code base if you change the input parameters or change the format of the datasets completely.
+
+## Group Members
+- Ben Mucsi
+- Rosemary Jose
+- Josh
+- Bonnie Weng
